@@ -7,10 +7,29 @@
   </head>
 
   <body>
+    <button>Press Me</button>
     <script>
-      let todo1 = "gagaga";
-      let todo2 = "hahaha";
+      let todo1 = "Todo Var One";
+      let todo2 = "Todo Var Two";
+      let todo3 = "Todo Var Three";
+
+      let element = document.createElement('div');
+      element.innerText = todo1;
+      document.body.appendChild(element);
+
+      element = document.createElement("div");
+      element.innerText = todo2;
+      document.body.appendChild(element);
+
+      element = document.createElement("div");
+      element.innerText = todo3;
+      document.body.appendChild(element);
+
+      //Trying without semi-colons ';':
+      element = document.createElement("button")
+      element.innerText="Click Me"
+      document.body.appendChild(element)
     </script>
-    <button>Click Me</button>
+
   </body>
 </html>
