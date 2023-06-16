@@ -7,18 +7,20 @@
   </head>
 
   <body>
-    <label>Type your To-Do Item Here: </label>
-    <input class="todoStr" type="text" size="15" />
-    <button class="addTodo" onclick="addDiv()">Add To-Do Item</button>
+    <input id="todoStr" type="text" placeholder="Type your To-Do Item Here" />
+    <button id="addTodoBtn">Add To-Do Item</button>
     <script>
       let todoArr = [];
-      function addDiv() {
+      function addTodo() {
         let element = document.createElement("div");
-        element.innerText = document.body.getElementsByClassName("todoStr")[0].innerText;
-        todoArr.push(element.innerHTML);
+        let textBox = document.getElementById("todoStr");
+        element.innerText = textBox.value;
+        textBox.value = "";
+        element.setAttribute("id", "todoItemNo" + todoArr.length);
+        todoArr.push(element.innerText);
         document.body.appendChild(element);
       }
-      // element = document.body.getElementsByClassName("addTodo")[0];
+      document.getElementById("addTodoBtn").setAttribute("onclick", "addTodo()");
     </script>
   </body>
 </html>
