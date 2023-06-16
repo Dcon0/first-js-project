@@ -29,11 +29,9 @@
         .getElementById("addTodoBtn")
         .setAttribute("onclick", "addTodo()");
 
-      document
-        .getElementById("todoStr")
-        .addEventListener("keyup", ({ key }) => {
-          if (key === "Enter") addTodo();
-        });
+      document.getElementById("todoStr").addEventListener("keyup", (event) => {
+        if (event.key === "Enter") addTodo();
+      });
     </script>
   </body>
 </html>
