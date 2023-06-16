@@ -9,18 +9,27 @@
   <body>
     <input id="todoStr" type="text" placeholder="Type your To-Do Item Here" />
     <button id="addTodoBtn">Add To-Do Item</button>
+    <button id="resetTodoBtn">Reset</button>
     <script>
       let todoArr = [];
       function addTodo() {
         let textBox = document.getElementById("todoStr");
         if (textBox.value == "") return;
         let element = document.createElement("div");
-        todoArr.push(element.innerText);
         element.setAttribute("id", "todoItemNo" + todoArr.length);
-        element.innerText = textBox.value;
-        // element.innerHTML =
+        todoArr.push(textBox.value);
+        // element.innerText = textBox.value;
+        element.innerHTML =
+          textBox.value +
+          "<button onclick=\"document.getElementById(\'todoItemNo"+todoArr.length+"\').remove()\">Remove this Item</button>";
         document.body.appendChild(element);
         textBox.value = "";
+      }
+      function resetToDoList() {
+        for (i in todoArr) {
+          document.getElementById("todoItemNo" + i).remove();
+        }
+        todoArr = [];
       }
       document
         .getElementById("addTodoBtn")
@@ -28,6 +37,9 @@
       document
         .getElementById("todoStr")
         .setAttribute("onkeypress", "if(event.key == 'Enter') addTodo()");
+      document
+        .getElementById("resetTodoBtn")
+        .setAttribute("onclick", "resetToDoList()");
     </script>
   </body>
 </html>
