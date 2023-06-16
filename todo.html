@@ -12,15 +12,22 @@
     <script>
       let todoArr = [];
       function addTodo() {
-        let element = document.createElement("div");
         let textBox = document.getElementById("todoStr");
-        element.innerText = textBox.value;
-        textBox.value = "";
-        element.setAttribute("id", "todoItemNo" + todoArr.length);
+        if (textBox.value == "") return;
+        let element = document.createElement("div");
         todoArr.push(element.innerText);
+        element.setAttribute("id", "todoItemNo" + todoArr.length);
+        element.innerText = textBox.value;
+        // element.innerHTML =
         document.body.appendChild(element);
+        textBox.value = "";
       }
-      document.getElementById("addTodoBtn").setAttribute("onclick", "addTodo()");
+      document
+        .getElementById("addTodoBtn")
+        .setAttribute("onclick", "addTodo()");
+      document
+        .getElementById("todoStr")
+        .setAttribute("onkeypress", "if(event.key == 'Enter') addTodo()");
     </script>
   </body>
 </html>
