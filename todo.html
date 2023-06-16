@@ -22,12 +22,18 @@
         document.body.appendChild(element);
         textBox.value = "";
       }
+
+      function addTodoKeyPress() {}
+
       document
         .getElementById("addTodoBtn")
         .setAttribute("onclick", "addTodo()");
+
       document
         .getElementById("todoStr")
-        .setAttribute("onkeypress", "if(event.key == 'Enter') addTodo()");
+        .addEventListener("keyup", ({ key }) => {
+          if (key === "Enter") addTodo();
+        });
     </script>
   </body>
 </html>
