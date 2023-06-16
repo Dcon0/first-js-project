@@ -7,61 +7,18 @@
   </head>
 
   <body>
-    <button>Press Me</button>
+    <label>Type your To-Do Item Here: </label>
+    <input class="todoStr" type="text" size="15" />
+    <button class="addTodo" onclick="addDiv()">Add To-Do Item</button>
     <script>
-      let todoArr = [1, 2, "Todo Var One", 5, 6, "Todo Var Three"];
-
-      todoArr.push("Four");
-      todoArr.push("Five");
-
-      function addDiv(text) {
+      let todoArr = [];
+      function addDiv() {
         let element = document.createElement("div");
-        element.innerText = text;
+        element.innerText = document.body.getElementsByClassName("todoStr")[0].innerText;
+        todoArr.push(element.innerHTML);
         document.body.appendChild(element);
       }
-
-      // for (todo in todoArr) addDiv(todoArr[todo]);
-
-      todoArr.forEach(addDiv);
-
-      function addButton(text) {
-        let element = document.createElement("button");
-        element.innerText = text;
-        document.body.appendChild(element);
-      }
-
-      addButton("Click Me");
-
-      function toUpper(str) {
-        if (typeof str == "string") return str.toUpperCase();
-        return "not a string";
-      }
-
-      function log(str) {
-        console.log(str);
-      }
-
-      log(toUpper("Heeeeeey"));
-
-      function arraySumInt(array) {
-        let sum = 0;
-        array.forEach((item) => {
-          itemType = typeof item;
-          if (itemType == "number" || itemType == "bigint") sum += item;
-        });
-        return sum;
-      }
-
-      function arraySum(array) {
-        let sum = 0;
-        array.forEach((item) => (sum += item));
-        return sum;
-      }
-
-      addDiv(arraySumInt(todoArr));
-      addDiv(arraySum(todoArr))
-
-      document.title = "This title was set using JS, how cool is that!";
+      // element = document.body.getElementsByClassName("addTodo")[0];
     </script>
   </body>
 </html>
