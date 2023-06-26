@@ -17,18 +17,21 @@
         if (textBox.value == "") return;
         let element = document.createElement("div");
         element.setAttribute("id", "todoItemNo" + todoArr.length);
-        todoArr.push(textBox.value);
+        todoArr.push({ value: textBox.value, todoItemNo: todoArr.length + 1 });
         // element.innerText = textBox.value;
         element.innerHTML =
           textBox.value +
-          "<button onclick=\"document.getElementById(\'todoItemNo"+todoArr.length+"\').remove()\">Remove this Item</button>";
+          "<button onclick=\"document.getElementById('todoItemNo" +
+          (todoArr.length - 1) +
+          "').remove();todoArr.splice(+todoArr.indexOf('" +
+          textBox.value +
+          "'),1);\">Remove this Item</button>";
         document.body.appendChild(element);
         textBox.value = "";
       }
       function resetToDoList() {
-        for (i in todoArr) {
+        for (let i = todoArr.length; i >= 0; i--)
           document.getElementById("todoItemNo" + i).remove();
-        }
         todoArr = [];
       }
       document
