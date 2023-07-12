@@ -9,7 +9,7 @@ function addTodo() {
     // element.innerText = textBox.value;
     element.innerHTML =
         textBox.value +
-        "<button onclick= \'document.getElementById('" + id + "').remove();todoArr.splice(+todoArr.indexOf('" + id + "'),1);\">Remove this Item</button>";
+        "<button onclick= \'document.getElementById(\"" + id + "\").remove();todoIdArr.splice(todoIdArr.indexOf(\"" + id + "\"),1);\'>Remove this Item</button>";
     document.body.appendChild(element);
     textBox.value = "";
 }
