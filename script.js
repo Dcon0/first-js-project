@@ -6,9 +6,8 @@ let counter = 0
 function removeTodo(event) {
     const deleteButton = event.target;
     document.getElementById(deleteButton.getAttribute("parentdivid")).remove();
-    // todoIdArr.splice(todoIdArr.indexOf(deleteButton.getAttribute("parentdivid")), 1);
     todoIdArr = todoIdArr.filter(todoItem => {
-        if (todoItem === deleteButton.getAttribute("parentdivid"))
+        if (todoItem === deleteButton.dataset.parentDivId)
             return false;
         return true;
     })
@@ -24,7 +23,7 @@ function addTodo() {
 
     const deleteButton = document.createElement("button");
     deleteButton.innerText = "Remove this Item"
-    deleteButton.setAttribute("parentdivid", id);
+    deleteButton.dataset.parentDivId = id;
     deleteButton.onclick = removeTodo;
     newTodoItem.appendChild(deleteButton);
     todoListDiv.appendChild(newTodoItem);
