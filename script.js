@@ -1,7 +1,6 @@
 class TodoItem {
-    static counter = 0;
     constructor(title, dueDate) {
-        this._id = TodoItem.counter++;
+        this._id = new Date().getTime();
         this.title = title;
         this.dueDate = dueDate;
     }
@@ -82,6 +81,7 @@ function renderNewTodo(todoItem) {
     const newTodoDeleteButtonData = document.createElement("td");
     const newTodoEditButton = document.createElement("button");
     const newTodoDeleteButton = document.createElement("button");
+    newTodoItemTableRow.id = todoItem._id;
     newTodoTitleData.style.border = cellBorder;
     newTodoTitleData.style.padding = cellPadding;
     newTodoDateData.style.border = cellBorder;
