@@ -7,10 +7,16 @@
   </head>
 
   <body>
-    <input id="todoStr" type="text" placeholder="Type your To-Do Item Here" />
-    <button id="addTodoBtn">Add To-Do Item</button>
-    <button id="resetTodoBtn">Reset</button>
-    <div id="todoList"></div>
+    <div>
+      <input type="text" id="todoTitleInput" placeholder="Type your To-Do Item Here" />
+      <input type="date" id="todoDateInput">
+      <button id="addTodoBtn">Add To-Do Item</button>
+      <button id="resetTodoBtn">Reset</button>
+    </div>
+    <div id="todoListDiv">
+      <table id="todoListTable"></table>
+    </div>
+
     <script src="./script.js"></script>
   </body>
 </html>
