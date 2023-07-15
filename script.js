@@ -1,6 +1,6 @@
 class TodoItem {
     constructor(title, dueDate) {
-        this._id = new Date().getTime();
+        this._id = "" + new Date().getTime();
         this.title = title;
         this.dueDate = dueDate;
     }
@@ -13,6 +13,11 @@ const todoListTable = document.getElementById('todoListTable');
 const addButton = document.getElementById('addTodoBtn');
 const resetButton = document.getElementById('resetTodoBtn');
 todoListTable.style.borderCollapse = "collapse";
+const headerBorder = "1px solid black";
+const headerPadding = "4px";
+const cellBorder = "1px solid black";
+const cellPadding = "4px";
+const inputFieldsLeftMargin = "5px";
 
 clearTableRender();
 let todoArr = JSON.parse(localStorage.getItem("todoArray"));
@@ -27,9 +32,11 @@ function initRender() {
     });
 }
 
+const saveToLocalStorage = () =>
+    localStorage.setItem("todoArray", JSON.stringify(todoArr));
+
+
 function clearTableRender() {
-    const headerBorder = "1px solid black";
-    const headerPadding = "4px";
     todoListTable.innerHTML = "";
     const headerRow = document.createElement("tr");
     const titleHeader = document.createElement("th");
@@ -55,7 +62,6 @@ function clearTableRender() {
     todoListTable.appendChild(headerRow);
 }
 
-
 function addTodo() {
     const title = todoTitleInput.value;
     const date = todoDateInput.value;
@@ -67,13 +73,35 @@ function addTodo() {
     todoDateInput.value = "";
     const newTodoItem = new TodoItem(title, date);
     renderNewTodo(newTodoItem);
-    todoArr.push(newTodoItem);
-    localStorage.setItem("todoArray", JSON.stringify(todoArr));
+    addTodoToArray(newTodoItem);
+}
+
+const addTodoToArray = todoItem => {
+    todoArr.push(todoItem);
+    saveToLocalStorage();
+}
+
+const removeTodoFromArray = todoId => {
+    todoArr = todoArr.filter(todoItem => {
+        if (todoItem._id === todoId)
+            return false;
+        return true;
+    })
+    saveToLocalStorage();
+}
+
+const updateTodoArray = (todoId, newTitle, newDate) => {
+    todoArr = todoArr.map(todoItem => {
+        if (todoItem._id === todoId) {
+            todoItem.title = newTitle;
+            todoItem.dueDate = newDate;
+        }
+        return todoItem;
+    });
+    saveToLocalStorage();
 }
 
 function renderNewTodo(todoItem) {
-    const cellBorder = "1px solid black";
-    const cellPadding = "4px";
     const newTodoItemTableRow = document.createElement("tr");
     const newTodoTitleData = document.createElement("td");
     const newTodoDateData = document.createElement("td");
@@ -82,6 +110,10 @@ function renderNewTodo(todoItem) {
     const newTodoEditButton = document.createElement("button");
     const newTodoDeleteButton = document.createElement("button");
     newTodoItemTableRow.id = todoItem._id;
+    newTodoEditButton.dataset.todoId = todoItem._id;
+    newTodoDeleteButton.dataset.todoId = todoItem._id;
+    newTodoEditButton.onclick = editTodo;
+    newTodoDeleteButton.onclick = deleteTodo;
     newTodoTitleData.style.border = cellBorder;
     newTodoTitleData.style.padding = cellPadding;
     newTodoDateData.style.border = cellBorder;
@@ -103,10 +135,99 @@ function renderNewTodo(todoItem) {
     todoListTable.appendChild(newTodoItemTableRow);
 }
 
+function removeTodoRender(todoId) {
+    const todoRow = document.getElementById(todoId);
+    todoRow.remove();
+}
+
+function renderResetRow(todoId) {
+    const todoRow = document.getElementById(todoId);
+    const titleTableCell = todoRow.childNodes[0];
+    const dateTableCell = todoRow.childNodes[1];
+    const editTableCell = todoRow.childNodes[2];
+    titleTableCell.childNodes[1].remove();
+    dateTableCell.childNodes[1].remove();
+    editTableCell.innerHTML = "";
+    const editButton = document.createElement("button");
+    editButton.dataset.todoId = todoId;
+    editButton.onclick = editTodo;
+    editButton.innerText = "Edit";
+    editTableCell.appendChild(editButton);
+}
+
+function editTodoRender(todoId) {
+    const todoRow = document.getElementById(todoId);
+    const titleTableCell = todoRow.childNodes[0];
+    const dateTableCell = todoRow.childNodes[1];
+    const editTableCell = todoRow.childNodes[2];
+    const newTitleInput = document.createElement("input");
+    newTitleInput.type = "text";
+    newTitleInput.placeholder = "Type your new title here";
+    newTitleInput.style.marginLeft = inputFieldsLeftMargin;
+    titleTableCell.appendChild(newTitleInput);
+    const newDateInput = document.createElement("input");
+    newDateInput.type = "date";
+    newDateInput.style.marginLeft = inputFieldsLeftMargin;
+    dateTableCell.appendChild(newDateInput);
+    const saveButton = document.createElement("button");
+    saveButton.innerText = "Save Changes";
+    saveButton.dataset.todoId = todoId;
+    saveButton.onclick = saveChanges;
+    const cancelButton = document.createElement("button");
+    cancelButton.innerText = "Cancel";
+    cancelButton.dataset.todoId = todoId;
+    cancelButton.onclick = cancelChanges;
+    editTableCell.innerHTML = "";
+    editTableCell.appendChild(saveButton);
+    editTableCell.appendChild(cancelButton);
+}
+
+function updateTodoRender(todoId, newTitle, newDate) {
+    const todoRow = document.getElementById(todoId);
+    todoRow.childNodes[0].textContent = newTitle;
+    todoRow.childNodes[1].textContent = newDate;
+    const editTableCell = todoRow.childNodes[2];
+    editTableCell.innerHTML = "";
+    const editButton = document.createElement("button");
+    editButton.dataset.todoId = todoId;
+    editButton.onclick = editTodo;
+    editButton.innerText = "Edit";
+    editTableCell.appendChild(editButton);
+}
+
 function reset() {
     clearTableRender();
     todoArr = [];
     localStorage.removeItem("todoArray");
+}
+
+function editTodo(event) {
+    const todoId = event.target.dataset.todoId;
+    editTodoRender(todoId);
+}
+
+function deleteTodo(event) {
+    const todoId = event.target.dataset.todoId;
+    removeTodoRender(todoId);
+    removeTodoFromArray(todoId);
+}
+
+function saveChanges(event) {
+    const todoId = event.target.dataset.todoId;
+    const todoRow = document.getElementById(todoId);
+    const newTitle = todoRow.childNodes[0].childNodes[1].value;
+    const newDate = todoRow.childNodes[1].childNodes[1].value;
+    if (newTitle === '' || newDate === '') {
+        alert("You have to fill all the fields first!");
+        return;
+    }
+    updateTodoRender(todoId, newTitle, newDate);
+    updateTodoArray(todoId, newTitle, newDate);
+}
+
+function cancelChanges(event) {
+    const todoId = event.target.dataset.todoId;
+    renderResetRow(todoId);
 }
 
 todoTitleInput.onkeyup = event => {
